@@ -17,3 +17,6 @@ Makaroniku, 14900
 Ultra Low, 19900
 Khong Guan, 19900
 Kopi Susu, 3000
+Coca Cheddar, 15000
+Khing Khong, 11300
+Danis, 33000
