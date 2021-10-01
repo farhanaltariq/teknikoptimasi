@@ -54,7 +54,7 @@
             // Print output result
             for($h=0; $h<$parameter['population_size']; $h++){
                 echo '<h4>Population : ' . $h+1 . '<h4><table>';
-                echo '<th>Food</th><th>Protein</th><th>Calories</th><th>Fat</th><th>Fiber</th><th>Selected</th>';
+                echo '<th>Food</th><th>Protein</th><th>Calories</th><th>Fat</th><th>Fiber</th><th>Chromosome</th>';
                 for($i=0; $i<$gen_length; $i++){
                     echo '<tr><td>' . $itemList['foods'][$i]['food'] . '</td><td>' . 
                           $itemList['foods'][$i]['protein'] . '</td><td>' .  
@@ -63,7 +63,7 @@
                           $itemList['foods'][$i]['fiber'] . '</td><td>' .  
                           $gen[$h][$i] . '</tr>';
                 }
-                echo '</table><hr>';
+                echo '</table>';
             }
         }
     }
