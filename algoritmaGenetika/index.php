@@ -6,6 +6,7 @@
         const POPULATION_SIZE = 10;
         const BUDGET = 280000;
         const STOPPING_VALUE = 10000;
+        const CROSSOVER_RATE = 0.8;
     }
 
     class Catalogue{
@@ -162,17 +163,108 @@
                     echo '(Not Fit)<br>';
             }
             if($this->isFound($fits)){
-                echo '<br>Found';
+                echo '<br>Found<br>';
             } else{
-                echo '<br> >> Next Generation';
+                echo '<br> >> Next Generation<br>';
+            }
+        }
+    }
+
+    class Crossover{
+        public $population;
+
+        function __construct($population)
+        {
+            $this->population = $population;
+        }
+
+        function randomZeroToOne(){
+            return (float) rand() / (float) getrandmax();
+        }
+
+        function generateCrossover(){
+            for ($i = 0; $i<=Parameters::POPULATION_SIZE; $i++){
+                $randomZeroToOne = $this->randomZeroToOne();
+                if($randomZeroToOne < Parameters::CROSSOVER_RATE){
+                    $parents[$i] = $randomZeroToOne;
+                }
+            }
+            foreach(array_keys($parents) as $key){
+                foreach(array_keys($parents) as $subkey){
+                    if($key !== $subkey){
+                        $ret[] = [$key, $subkey];
+                    }
+                }
+                array_shift($parents);
+            }
+            return $ret;
+        }
+
+        function offspring($parent1, $parent2, $cutPointIndex, $offspring){
+            $lengthOfGen = new Individu;
+            if($offspring === 1){
+                for($i=0; $i<$lengthOfGen->countNumberOfGen(); $i++){
+                    if($i <= $cutPointIndex)
+                        $ret[] = $parent1[$i];
+                    if($i > $cutPointIndex){
+                        $ret[] = $parent2[$i];
+                    }
+                }
+            }
+            if($offspring === 2){
+                for($i=0; $i<$lengthOfGen->countNumberOfGen(); $i++){
+                    if($i <= $cutPointIndex)
+                        $ret[] = $parent2[$i];
+                    if($i > $cutPointIndex){
+                        $ret[] = $parent1[$i];
+                    }
+                }
+            }
+            return $ret;
+        }
+
+        function cutPointRandom(){
+            $lengthOfGen = new Individu;
+            return rand(0, $lengthOfGen->countNumberOfGen()-1);
+        }
+
+        function crossover(){
+            $cutPointIndex = $this->cutPointRandom();
+            echo '<br><br>Cut Point Index : ' . $cutPointIndex;
+            foreach($this->generateCrossover() as $listOfCrossover){
+                $parents1 = $this->population[$listOfCrossover[0]];
+                $parents2 = $this->population[$listOfCrossover[1]];
+                echo '<br><br>Parents : <br>';
+                foreach($parents1 as $gen){
+                    echo $gen;
+                }
+                echo ' >< ';
+                foreach($parents2 as $gen){
+                    echo $gen;
+                }
+                echo '<br>';
+                echo 'Offspring<br>';
+                $offspring1 = $this->offspring($parents1, $parents2, $cutPointIndex, 1);
+                $offspring2 = $this->offspring($parents1, $parents2, $cutPointIndex, 2);
+                foreach($offspring1 as $gen){
+                    echo $gen;
+                }
+                echo ' >< ';
+                foreach($offspring2 as $gen){
+                    echo $gen;
+                }
             }
         }
     }
 
     $initialPopulation = new Population;
     $population = $initialPopulation->createRandomPopulation();
+    
     $fitness = new Fitness;
     $fitness->fitnessEvaluation($population);
+    
+    $crossover = new Crossover($population);
+    $crossover->crossover();
     // $individu = new Individu;
     // print_r($individu->createRandomIndividu());
 ?>
