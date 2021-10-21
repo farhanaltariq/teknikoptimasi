@@ -1,9 +1,10 @@
 <?php
 
+    //Static class in Java
     class Parameters{
         const FILE_NAME = 'products.txt';
         CONST COLUMNS = ['item', 'price'];
-        const POPULATION_SIZE = 10;
+        const POPULATION_SIZE = 30;
         const BUDGET = 280000;
         const STOPPING_VALUE = 10000;
         const CROSSOVER_RATE = 0.8;
@@ -13,7 +14,7 @@
         private function createProductColumn($listOfRawProducts){
             foreach(array_keys($listOfRawProducts) as $listOfRawProductKey){
                 // change index name
-                $listOfRawProducts[parameters::COLUMNS[$listOfRawProductKey]] = $listOfRawProducts[$listOfRawProductKey];
+                $listOfRawProducts[Parameters::COLUMNS[$listOfRawProductKey]] = $listOfRawProducts[$listOfRawProductKey];
                 // clear list
                 unset($listOfRawProducts[$listOfRawProductKey]);
             }
@@ -51,6 +52,9 @@
     }
 
     class Population{
+        //Generate random number between 0 and 1
+        //(Call function create random individu)
+        //Then insert it into new array
         function createRandomPopulation(){
             $individu = new Individu;
             for($i=0; $i<=Parameters::POPULATION_SIZE; $i++){
@@ -61,6 +65,7 @@
     }
 
     class Fitness{
+        //Count the price of the selected item only
         function selectingItem($individu){
             $catalogue = new Catalogue;
             foreach($individu as $individuKey => $binaryGen){
@@ -223,36 +228,104 @@
             return $ret;
         }
 
+        //Generate random number below number of gen
         function cutPointRandom(){
             $lengthOfGen = new Individu;
             return rand(0, $lengthOfGen->countNumberOfGen()-1);
         }
 
         function crossover(){
+            //Used as cutpoint
             $cutPointIndex = $this->cutPointRandom();
-            echo '<br><br>Cut Point Index : ' . $cutPointIndex;
+            // echo '<br><br>Cut Point Index : ' . $cutPointIndex;
+            
             foreach($this->generateCrossover() as $listOfCrossover){
                 $parents1 = $this->population[$listOfCrossover[0]];
                 $parents2 = $this->population[$listOfCrossover[1]];
-                echo '<br><br>Parents : <br>';
-                foreach($parents1 as $gen){
-                    echo $gen;
-                }
-                echo ' >< ';
-                foreach($parents2 as $gen){
-                    echo $gen;
-                }
-                echo '<br>';
-                echo 'Offspring<br>';
+                // echo '<br><br>Parents : <br>';
+                // foreach($parents1 as $gen){
+                //     echo $gen;
+                // }
+                // echo ' >< ';
+                // foreach($parents2 as $gen){
+                //     echo $gen;
+                // }
+                // echo '<br>';
+                // echo 'Offspring<br>';
                 $offspring1 = $this->offspring($parents1, $parents2, $cutPointIndex, 1);
                 $offspring2 = $this->offspring($parents1, $parents2, $cutPointIndex, 2);
-                foreach($offspring1 as $gen){
-                    echo $gen;
+                // foreach($offspring1 as $gen){
+                //     echo $gen;
+                // }
+                // echo ' >< ';
+                // foreach($offspring2 as $gen){
+                //     echo $gen;
+                // }
+                $offsprings[] = $offspring1;
+                $offsprings[] = $offspring2;
+            }
+            return $offsprings;
+        }
+    }
+
+    class Randomizer{
+        static function getRandomIndexOfGen(){
+            return rand(0, (new Individu())->countNumberOfGen());
+        }
+
+        static function getRandomIndexOfIndividu(){
+            return rand(0, Parameters::POPULATION_SIZE);
+        }
+    }
+    class Mutation{
+        function __construct($population)
+        {
+            $this->population = $population;
+        }
+
+        function calculateMutationRate(){
+            return 1 / (new Individu())->countNumberOfGen();
+        }
+
+        function calculateMutation(){
+            return round($this->calculateMutationRate() * Parameters::POPULATION_SIZE);
+        }
+
+        function isMutation(){
+            if($this->calculateMutation() > 0){
+                return true;
+            }
+        }
+
+        function generateMutation($valueOfGen){
+            if($valueOfGen === 0 )
+                return 1;
+            else
+                return 0;
+        }
+        function mutation(){
+            // echo $this->calculateMutation();
+            if($this->isMutation()){
+                for($i=0; $i<$this->calculateMutation(); $i++){
+                    $indexOfIndividu = Randomizer::getRandomIndexOfIndividu();
+                    $indexOfGen = Randomizer::getRandomIndexOfGen();
+                    $selectedIndividu = $this->population[$indexOfIndividu];
+
+                    echo "Before Mutation <br>";
+                    print_r($selectedIndividu);
+                    echo "<br>";
+
+                    $valueOfGen = $selectedIndividu[$indexOfGen];
+                    $mutatedGen = $this->generateMutation($valueOfGen);
+
+                    $selectedIndividu[$indexOfGen] = $mutatedGen;
+                    $ret[] = $selectedIndividu;
+                    
+                    echo "After Mutation <br>";
+                    print_r($selectedIndividu);
+                    echo "<br>";
                 }
-                echo ' >< ';
-                foreach($offspring2 as $gen){
-                    echo $gen;
-                }
+                return $ret;
             }
         }
     }
@@ -260,11 +333,32 @@
     $initialPopulation = new Population;
     $population = $initialPopulation->createRandomPopulation();
     
-    $fitness = new Fitness;
-    $fitness->fitnessEvaluation($population);
-    
+    // $fitness = new Fitness;
+    // $fitness->fitnessEvaluation($population);
+    echo '<br><br>';
+    // (new Mutation($population))->mutation();
+
     $crossover = new Crossover($population);
-    $crossover->crossover();
+    $crossoverOffsprings = $crossover->crossover();
+
+    echo 'Crossover Offsprings : <br>';
+    print_r($crossoverOffsprings);
+    echo "<br><br><br>";
+
+    $mutation = new Mutation($population);
+    if($mutation->mutation()){
+        $mutationOffSprings = $mutation->mutation();
+        echo "<br>Mutation offspring<br>";
+        print_r($mutationOffSprings);
+        echo "<br>";
+        foreach($mutationOffSprings as $mutationOffspring){
+            $crossoverOffsprings[] = $mutationOffspring;
+        }
+    }
+
+    echo 'Mutation offsprings : <br>';
+    print_r($crossoverOffsprings);
+    
     // $individu = new Individu;
     // print_r($individu->createRandomIndividu());
 ?>
