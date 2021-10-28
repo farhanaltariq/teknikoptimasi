@@ -3,8 +3,9 @@
 use Parameters as GlobalParameters;
 
 class Parameters{
-        const FILE_NAME  = ['mainboards.txt', 'ram.txt', 'vga.txt', 'storage.txt', 'processor.txt'];
+        const FILE_NAME  = ['mainboards', 'ram', 'vga', 'storage', 'processor'];
         const COLUMNS = ['item', 'price'];
+        const POPULATION_SIZE = 10;
 }
 
 class Catalogue{
@@ -14,35 +15,59 @@ class Catalogue{
             $listOfData[GlobalParameters::COLUMNS[$listOfDataKeys]] = $listOfData[$listOfDataKeys];
             unset($listOfData[$listOfDataKeys]);
         }
+        // print_r($listOfData);
         return $listOfData;
     }
 
-    //Assert each data to array
+    //Assign each data to array
     function product(){
         $products = [];
 
         foreach(GlobalParameters::FILE_NAME as $data){
-            $datas = file($data);
-            echo $data;
-            if(!empty($datas))
-                foreach($datas as $listOfData){
-                    echo $listOfData;
-                    $products[] = $this->createProductColumn(explode(',', $listOfData));
-                }
+            foreach(file($data.".txt") as $listOfData){
+                // echo $listOfData;
+                $products[] = $this->createProductColumn(explode(',', $listOfData));
+            }
         }
         return $products;
     }
 }
 
 class Individu{
-    //Count total number
-    public static function countNumberOfGen(){
-        $catalogue = new Catalogue;
-        return count($catalogue->product());
+    //Count total number of each product
+    function countNumberOfGen($arrKey){
+        foreach(GlobalParameters::FILE_NAME as $key){
+            $ret[$key] = count(file($key.".txt")); 
+        }
+        return $ret[$arrKey];
+    }
+    function createRandomIndividu(){
+        foreach(GlobalParameters::FILE_NAME as $key){
+            $ret[$key] = rand(0, $this->countNumberOfGen($key));
+        }
+        return $ret;
     }
 }
 
+class Population{
+    function createRandomPopulation(){
+        $individu = new Individu;
+        for($i=0; $i<GlobalParameters::POPULATION_SIZE; $i++){
+                $ret[] = $individu->createRandomIndividu();
+        }
+        foreach($ret as $key => $val){
+            echo "<br><br>Population " . $key . "<br>";
+            print_r($val);
+        }
+        return $ret;
+    }
+}
+
+
+
 $tes = new Catalogue;
 $tes->product();
-echo "Total Gen : " . Individu::countNumberOfGen();
+// echo "Total Gen : " . Individu::countNumberOfGen("mainboards");
+$pop = new Population;
+$pop->createRandomPopulation();
 ?>
