@@ -1,5 +1,5 @@
 # Studi Kasus  
-<center>Percobaan Studi Kasus Optimalisasi Budget Rakit PC</center>  
+<p align='center'>Percobaan Studi Kasus Optimalisasi Budget Rakit PC  </p>  
 NIM : 1900018320  
 Nama : Farhan Ario Altariq  
   
