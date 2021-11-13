@@ -63,11 +63,33 @@ class Population{
     }
 }
 
+class Fitness{
 
+    function fitnessEvaluation($population){
+        $catalogue = new Catalogue;
+        foreach($population as $listOfIndividuKeys => $listOfIndividu){
+            echo '<br>Individu ' . $listOfIndividuKeys . '<br>';
+            $count = 0;
+            foreach($listOfIndividu as $individuKey => $binaryGen){
+                //show selected or not
+                echo $binaryGen.'&nbsp;&nbsp;';
+                echo $individuKey; 
+                //show individus
+                // print_r($catalogue->product()[$count++]);
+                echo '<br>';
+            }
+        }
+    }
+}
 
-$tes = new Catalogue;
-$tes->product();
-// echo "Total Gen : " . Individu::countNumberOfGen("mainboards");
+// $tes = new Catalogue;
+// $tes->product();
+// // echo "Total Gen : " . Individu::countNumberOfGen("mainboards");
 $pop = new Population;
-$pop->createRandomPopulation();
+$population = $pop->createRandomPopulation();
+
+// echo "POPULATIONNNN : " . print_r($population);
+
+$fit = new Fitness;
+$fit->fitnessEvaluation($population)
 ?>
