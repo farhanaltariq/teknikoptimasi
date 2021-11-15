@@ -1,4 +1,5 @@
-<p align='center'>Ujian Tengah Semester Teknik Optimasi Universitas Ahmad Dahlan</p>  
-Nama : Farhan Ario Altariq  
-NIM : 1900018320  
-Kelas : B  
+<p align='center'>Ujian Tengah Semester Teknik Optimasi Universitas Ahmad Dahlan
+<br>Nama : Farhan Ario Altariq  
+<br>NIM : 1900018320  
+<br>Kelas : B  
+</p>  
