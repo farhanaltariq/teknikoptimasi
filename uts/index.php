@@ -288,7 +288,7 @@
         }
 
         function calculateMutation(){
-            return round($this->calculateMutationRate() * Parameters::POPULATION_SIZE);
+            return 0.2;
         }
 
         function isMutation(){
@@ -311,9 +311,9 @@
                     $indexOfGen = Randomizer::getRandomIndexOfGen();
                     $selectedIndividu = $this->population[$indexOfIndividu];
 
-                    // echo "Before Mutation <br>";
-                    // print_r($selectedIndividu);
-                    // echo "<br>";
+                    echo "Before Mutation <br>";
+                    print_r($selectedIndividu);
+                    echo "<br>";
 
                     $valueOfGen = $selectedIndividu[$indexOfGen];
                     $mutatedGen = $this->generateMutation($valueOfGen);
@@ -321,9 +321,9 @@
                     $selectedIndividu[$indexOfGen] = $mutatedGen;
                     $ret[] = $selectedIndividu;
                     
-                    // echo "After Mutation <br>";
-                    // print_r($selectedIndividu);
-                    // echo "<br>";
+                    echo "After Mutation <br>";
+                    print_r($selectedIndividu);
+                    echo "<br>";
                 }
                 return $ret;
             }
