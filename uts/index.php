@@ -284,11 +284,11 @@
         }
 
         function calculateMutationRate(){
-            return 1 / (new Individu())->countNumberOfGen();
+            return 0.2;
         }
 
         function calculateMutation(){
-            return 0.2;
+            return round($this->calculateMutationRate() * Parameters::POPULATION_SIZE);
         }
 
         function isMutation(){
