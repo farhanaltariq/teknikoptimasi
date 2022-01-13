@@ -10,7 +10,7 @@ class Catalogue
     {
         $koneksiDB = new KoneksiDatabase;
         $koneksiDB->namaServer = 'localhost';
-        $koneksiDB->namaDB = 'algen';
+        $koneksiDB->namaDB = 'parcel';
         $koneksiDB->namaUser = 'root';
         $koneksiDB->passwordInPlaintext = '';
 
@@ -47,7 +47,7 @@ class Catalogue
 
     function getAllProducts()
     {
-        $sql = "SELECT kode, item, item_price, item_picture FROM produk";
+        $sql = "SELECT kode, item, item_price FROM produk";
         //$sql = "SELECT kode, item, item_price, item_picture FROM produk WHERE kode=100";
 
         $listOfProduct = $this->getDBConnection()->query($sql);
