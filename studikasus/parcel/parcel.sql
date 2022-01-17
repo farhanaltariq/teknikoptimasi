@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 17 Jan 2022 pada 11.43
+-- Waktu pembuatan: 17 Jan 2022 pada 18.12
 -- Versi server: 10.4.18-MariaDB
 -- Versi PHP: 8.0.3
 
@@ -54,10 +54,10 @@ INSERT INTO `produk` (`kode`, `item`, `item_price`) VALUES
 (14, 'Teh Hijau', 16900),
 (15, 'Madurasa', 16900),
 (16, 'Makaroni', 14900),
-(17, 'Ultr Low', 19900),
+(17, 'Ultra Low', 19900),
 (18, 'Khong Guan', 19900),
 (19, 'Kopi Susu', 3000),
-(20, 'Khing Khoong', 11300),
+(20, 'Susu UHT', 11300),
 (21, 'Danis', 33000);
 
 --
