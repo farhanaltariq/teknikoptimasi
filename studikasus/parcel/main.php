@@ -16,6 +16,7 @@ class Main
     public $selectionType;
     public $stoppingValue;
     public $numOfLastResult;
+    public $mustHave;
 
     function runMain()
     {
@@ -67,7 +68,13 @@ class Main
 
             //jika best chromosome langsung ditemukan
             if ( abs($this->maxBudget - $populations[0]['amount']) <= $this->stoppingValue ) {
-                return $returnedChromosomes;
+                echo "<h1>RETURNED CHROMOSOME</h4>";
+                print_r($returnedChromosomes);
+                if(isset($this->mustHave)){
+                    if($this->ifInArray($returnedChromosomes))
+                        return $returnedChromosomes;
+                } else
+                    return $returnedChromosomes;
             }
 
             $bests[] = $returnedChromosomes;
@@ -86,8 +93,36 @@ class Main
             $filtereds = [];
         }
         rsort($bests);
+        
         if ($bests[0]['amount'] <= $this->maxBudget){
-            return $bests[0];
+            if(isset($this->mustHave)){
+                if($this->ifInArray($bests[0]['items']))
+                    return $bests[0];
+            } else{
+                return $bests[0];
+            }
         }
+    }
+
+    function ifInArray($arr){
+        // echo "<h4>Dicari ...</h4>";
+        // print_r($arr);
+        $found = 0;
+        foreach($this->mustHave as $val){
+            // echo "<br>False</br>";
+            foreach($arr as $target){
+                // print_r($target);
+                // echo "<br>";
+                if($val == $target[0]){
+                    // echo $val . " == " . $target[0] . "<br>";
+                    $found++;
+                    // echo "<br>FOUND<br>";
+                    break 1;
+                }
+                // if(!$found) break;
+            }
+        }
+        if($found == sizeof($this->mustHave)) return $found;
+        // else $this->runMain();
     }
 }
