@@ -70,8 +70,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "<br>List of items: <br>";
         echo "<table><tr><td>No.</td><td>Item</td><td>Price (Rp)</td></tr>";
         
+        $i = 0;
         foreach ($result['items'] as $key => $item) {
-            echo "<tr><td>" . ($key + 1) . "</td><td>" . $item[0] . "</td><td  style=align:right'>" . number_format($item[1]) . "</td></tr>";
+            echo "<tr><td>" . ($key + 1) . "</td><td>" ;
+            if($i < sizeof($mustHave) && $mustHave[$i] == $item[0]){
+                echo "<font color='orangered'><strong>";
+            }
+            echo $item[0];
+            if($i < sizeof($mustHave) && $mustHave[$i] == $item[0]){
+                echo "</strong></font>";
+                $i++;
+            }
+            echo "</td><td  style=align:right'>" . number_format($item[1]) . "</td></tr>";
         }
         echo "</table>";
     }
